@@ -1,3 +1,14 @@
+# OS and Editor
+._*
+.cache
+.DS_Store
+.idea
+*.sublime-project
+*.sublime-workspace
+.vscode
+Thumbs.db
+
+# Folders
+node_modules
 /favicon/
 /fonts/
-.DS_Store
