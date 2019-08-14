@@ -14,7 +14,7 @@ function toggleCheckbox() {
       }
     });
   });
-};
+}
 
 
 // filters & search
@@ -23,48 +23,43 @@ function actionPage() {
   const cards = document.querySelectorAll('.goods .card'),
     discountCheckbox = document.querySelector('#discount-checkbox'),
     goods = document.querySelector('.goods'),
-    min = document.querySelector('#min'),
-    max = document.querySelector('#max'),
-    search = document.querySelector('.search-wrapper_input'),
+    minPrice = document.querySelector('#min'),
+    maxPrice = document.querySelector('#max'),
+    searchInput = document.querySelector('.search-wrapper_input'),
     searchBtn = document.querySelector('.search-btn');
 
-  // discount filter
+  // filter
 
-  discountCheckbox.addEventListener('click', () => {
-    cards.forEach((el) => {
-      if (discountCheckbox.checked) {
-        if (!el.querySelector('.card-sale')) {
-          el.parentNode.remove();
-        }
-      } else {
-        if (!el.querySelector('.card-sale')) {
-          goods.appendChild(el.parentNode);
-        }
-      }
-    });
-  });
+  minPrice.addEventListener('keyup', filter);
+  maxPrice.addEventListener('keyup', filter);
+  discountCheckbox.addEventListener('click', filter);
 
-  // price filter
-
-  min.addEventListener('change', filterPrice);
-  max.addEventListener('change', filterPrice);
-
-  function filterPrice() {
+  function filter() {
     cards.forEach((el) => {
       const cardPrice = el.querySelector('.card-price');
       const price = parseFloat(cardPrice.textContent);
-      if ((min.value && price < min.value) || (max.value && price > max.value)) {
+      if (
+        (minPrice.value && price < minPrice.value) ||
+        (maxPrice.value && price > maxPrice.value) ||
+        (discountCheckbox.checked && !el.querySelector('.card-sale'))
+      ) {
         el.parentNode.remove();
       } else {
         goods.appendChild(el.parentNode);
       }
     });
-  };
+  }
 
   // search
+  searchInput.addEventListener('keyup', (e) => {
+    if (e.which === 13 || e.keyCode === 13) {
+      search();
+    }
+  });
+  searchBtn.addEventListener('click', search);
 
-  searchBtn.addEventListener('click', () => {
-    const searchText = new RegExp(search.value.trim(), 'i');
+  function search() {
+    const searchText = new RegExp(searchInput.value.trim(), 'i');
 
     cards.forEach((el) => {
       const title = el.querySelector('.card-title');
@@ -74,8 +69,9 @@ function actionPage() {
         goods.appendChild(el.parentNode);
       }
     });
-  });
-};
+    searchInput.value = '';
+  }
+}
 
 
 // cart
@@ -94,7 +90,7 @@ function toggleCart() {
     modalCart.style.display = '';
     document.body.style.overflow = '';
   });
-};
+}
 
 
 // work with card
@@ -144,8 +140,8 @@ function updateCart() {
     } else {
       cartWrapper.appendChild(cartEmpty);
     }
-  };
-};
+  }
+}
 
 
 toggleCheckbox();
